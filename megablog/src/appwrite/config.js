@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client,Databases,Storage,Query } from "appwrite";
+import { Client,Databases,Storage,Query, ID } from "appwrite";
 
 export class Service{
     Client=new Client();
@@ -73,7 +73,8 @@ export class Service{
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
     }
-    async listdocument(querys=[Query.equal("status","active")]){//key:value
+    async listdocument(querys=[Query.equal("status","active")]){
+        //key:value
         try {
             return await this.databases.listDocuments(
                 conf.appwritedatabaseid,
@@ -84,6 +85,32 @@ export class Service{
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
     }
+    //file upload service in storage 
+    async uploadfile(file){
+        try {
+            return await this.bucket.createFile(
+                conf.appwritebucketid,
+                ID.unique(),
+                file
+            )
+        } catch (error) {
+            console.log("Appwrite serive :: getCurrentUser :: error", error);
+        }
+    }
+    async deletefile(fileId){
+        try {
+            return await this.bucket.deleteFile(
+                conf.appwritebucketid,
+                ID.unique(),
+                fileId
+            )
+        } catch (error) {
+            console.log("Appwrite serive :: getCurrentUser :: error", error);
+
+        }
+    }
+    
+
 }
 
 const service= new Service()
