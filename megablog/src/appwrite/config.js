@@ -12,7 +12,7 @@ export class Service{
         this.databases =new Databases(this.Client)
         this.bucket = new Storage(this.Client)
     }
-    async createPost({title,slug,content,featuredImage,status,userId}){
+    async createPost({title,slug,content,featuredimage,status,userId}){
         try {
             return await this.databases.createDocument(
                 conf.appwritedatabaseid,
@@ -21,7 +21,7 @@ export class Service{
                 {
                     title,
                     content,
-                    featuredImage,
+                    featuredimage,
                     userId,
                     status
                 }
@@ -30,7 +30,7 @@ export class Service{
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
     }
-    async updatedocument(slug,{title,content,featuredImage,status}){
+    async updatedocument(slug,{title,content,featuredimage,status}){
         try {
            return await this.databases.updateDocument(
             conf.appwritedatabaseid,
@@ -39,7 +39,7 @@ export class Service{
             {
                 title,
                 content,
-                featuredImage,
+                featuredimage,
                 status,
             }
 
@@ -63,12 +63,23 @@ export class Service{
     }
     async getdocument(slug){
         try {
-            await this.databases.getDocument(
+            return await this.databases.getDocument(
                 conf.appwritedatabaseid,
                 conf.appwritecollectionid,
                 slug,
             )
             
+        } catch (error) {
+            console.log("Appwrite serive :: getCurrentUser :: error", error);
+        }
+    }
+    async listdocument(querys=[Query.equal("status","active")]){//key:value
+        try {
+            return await this.databases.listDocuments(
+                conf.appwritedatabaseid,
+                conf.appwritecollectionid,
+                querys,
+            )
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
