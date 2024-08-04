@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client, Account, ID,Databases,Storage,Query } from "appwrite";
+import { Client,Databases,Storage,Query } from "appwrite";
 
 export class Service{
     Client=new Client();
@@ -30,7 +30,7 @@ export class Service{
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
     }
-    async updatedocument(slug,{title,content,featuredImage,status,userId}){
+    async updatedocument(slug,{title,content,featuredImage,status}){
         try {
            return await this.databases.updateDocument(
             conf.appwritedatabaseid,
@@ -59,6 +59,18 @@ export class Service{
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);
             // return false
+        }
+    }
+    async getdocument(slug){
+        try {
+            await this.databases.getDocument(
+                conf.appwritedatabaseid,
+                conf.appwritecollectionid,
+                slug,
+            )
+            
+        } catch (error) {
+            console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
     }
 }
